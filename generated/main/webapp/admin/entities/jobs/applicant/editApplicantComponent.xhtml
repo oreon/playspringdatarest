@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:s="http://jboss.org/schema/seam/taglib" xmlns:wc="http://witchcraft.sourceforge.net/jsf">  
+  <h:panelGroup id="editApplicantComponentPanel"> 
+    <h:panelGrid columns="1" styleClass="editInfo" columnClasses="leftCol, rightCol"> 
+      <c:if test="${numColumns == null }"> 
+        <c:set var="numColumns" value="4"/> 
+      </c:if>  
+      <h:panelGrid columns="${numColumns}" styleClass="viewInfo" columnClasses="leftCol, rightCol"> 
+        <f:facet name="header"> 
+          <h:outputText value="#{msg.Applicant}"/> 
+        </f:facet>  
+        <p:outputLabel value="#{msg.person_gender}" for="gender" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewGender')}"/>  
+        <h:panelGroup> 
+          <h:selectOneMenu id="gender" label="#{msg.person_gender}" value="#{applicant.gender}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('applicant', 'editGender')) and !excludeGender == true}" disabled="#{disabledGender == true}"> 
+            <f:selectItem itemLabel="Please Select..." itemValue=""/>  
+            <f:selectItem itemValue="MALE" itemLabel="#{msg.MALE}"/>  
+            <f:selectItem itemValue="FEMALE" itemLabel="#{msg.FEMALE}"/> 
+          </h:selectOneMenu>  
+          <p:message for="gender"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.person_dob}" for="dob" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewDob')}"/>  
+        <h:panelGroup> 
+          <p:calendar id="dob" label="#{msg.person_dob}" value="#{applicant.dob}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('applicant', 'editDob')) and !excludeDob == true}" disabled="#{disabledDob == true}" navigator="true"/>  
+          <p:message for="dob"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.applicant_resume}" for="resume" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewResume')}"/>  
+        <h:panelGroup> 
+          <p:inputTextarea id="resume" label="#{msg.applicant_resume}" value="#{applicant.resume}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('applicant', 'editResume')) and !excludeResume == true}" disabled="#{disabledResume == true}" cols="55" rows="5" maxlength="800"/>  
+          <p:message for="resume"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.applicant_coverLetter}" for="coverLetter" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewCoverLetter')}"/>  
+        <h:panelGroup> 
+          <p:inputTextarea id="coverLetter" label="#{msg.applicant_coverLetter}" value="#{applicant.coverLetter}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('applicant', 'editCoverLetter')) and !excludeCoverLetter == true}" disabled="#{disabledCoverLetter == true}" cols="55" rows="5" maxlength="800"/>  
+          <p:message for="coverLetter"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.applicant_firstName}" for="firstName" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewFirstName')}"/>  
+        <h:panelGroup> 
+          <p:inputText id="firstName" label="#{msg.applicant_firstName}" value="#{applicant.firstName}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('applicant', 'editFirstName')) and !excludeFirstName == true}" disabled="#{disabledFirstName == true}"></p:inputText>  
+          <p:message for="firstName"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.applicant_lastName}" for="lastName" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewLastName')}"/>  
+        <h:panelGroup> 
+          <p:inputText id="lastName" label="#{msg.applicant_lastName}" value="#{applicant.lastName}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('applicant', 'editLastName')) and !excludeLastName == true}" disabled="#{disabledLastName == true}"></p:inputText>  
+          <p:message for="lastName"/> 
+        </h:panelGroup> 
+      </h:panelGrid>  
+      <c:if test="${numColumns == null }"> 
+        <c:set var="numColumns" value="4"/> 
+      </c:if>  
+      <h:panelGrid columns="${numColumns}" styleClass="viewInfo" columnClasses="leftCol, rightCol"> 
+        <f:facet name="header"> 
+          <h:outputText value="#{msg.Address}"/> 
+        </f:facet>  
+        <p:outputLabel value="#{msg.address_street}" for="address_street" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewStreet')}"/>  
+        <h:panelGroup> 
+          <p:inputText id="address_street" label="#{msg.address_street}" value="#{applicant.address.street}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('applicant', 'editStreet')) and !excludeStreet == true}" disabled="#{disabledStreet == true}"></p:inputText>  
+          <p:message for="address_street"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.address_city}" for="address_city" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewCity')}"/>  
+        <h:panelGroup> 
+          <p:inputText id="address_city" label="#{msg.address_city}" value="#{applicant.address.city}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('applicant', 'editCity')) and !excludeCity == true}" disabled="#{disabledCity == true}"></p:inputText>  
+          <p:message for="address_city"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.address_province}" for="address_province" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewProvince')}"/>  
+        <h:panelGroup> 
+          <p:inputText id="address_province" label="#{msg.address_province}" value="#{applicant.address.province}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('applicant', 'editProvince')) and !excludeProvince == true}" disabled="#{disabledProvince == true}"></p:inputText>  
+          <p:message for="address_province"/> 
+        </h:panelGroup> 
+      </h:panelGrid>  
+      <br/>  
+      <br/> 
+    </h:panelGrid> 
+  </h:panelGroup> 
+</ui:composition>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:s="http://jboss.org/schema/seam/taglib" xmlns:wc="http://witchcraft.sourceforge.net/jsf">  
+  <p:dataTable var="_application" value="#{records}" tableStyle="width:auto"> 
+    <p:column headerText="#{msg.Application} #{msg.id}" sortBy="#{application.id}" rendered="#{s:hasPermission('id', 'viewId' )}"> 
+      <h:link outcome="/admin/entities/jobs/application/viewApplication.xhtml" rendered="#{s:hasPermission(_application, 'view')}" propagation="none"> 
+        <h:outputText value="#{_application.id}"/>  
+        <f:param name="applicationId" value="#{_application.id}"/> 
+      </h:link> 
+    </p:column>  
+    <p:column headerText="#{msg.application_job}" sortBy="#{application.job}" rendered="#{ ! excludeJob == true and ( skipPermissionCheck == 'true' || s:hasPermission('application', 'viewJob')) }"> 
+      <h:panelGroup> 
+        <h:link id="jobapplication_job" escape="false" value="#{_application.job.displayName}" outcome="/admin/entities/jobs/job/viewJob.xhtml" propagation="none"> 
+          <f:param name="id" value="#{_application.job.id}"/>  
+          <f:param name="from" value="#{request.servletPath}"/> 
+        </h:link> 
+      </h:panelGroup> 
+    </p:column>  
+    <p:column headerText="#{msg.application_applicant}" sortBy="#{application.applicant}" rendered="#{ ! excludeApplicant == true and ( skipPermissionCheck == 'true' || s:hasPermission('application', 'viewApplicant')) }"> 
+      <h:panelGroup> 
+        <h:link id="applicantapplication_applicant" escape="false" value="#{_application.applicant.displayName}" outcome="/admin/entities/jobs/applicant/viewApplicant.xhtml" propagation="none"> 
+          <f:param name="id" value="#{_application.applicant.id}"/>  
+          <f:param name="from" value="#{request.servletPath}"/> 
+        </h:link> 
+      </h:panelGroup> 
+    </p:column>  
+    <p:column headerText="#{msg.application_coverLetter}" sortBy="#{application.coverLetter}" rendered="#{ ! excludeCoverLetter == true and ( skipPermissionCheck == 'true' || s:hasPermission('application', 'viewCoverLetter')) }"> 
+      <h:outputText value="#{_application.coverLetter}" escape="false"/> 
+    </p:column>  
+    <p:column rendered="#{s:hasPermission('_application', 'edit') and !_applicationCategory.archived}"> 
+      <h:link outcome="/admin/entities/jobs/application/editApplication.xhtml" rendered="#{s:hasPermission(_application, 'edit')}"> 
+        <h:graphicImage value="/images/icons/edit.png" style="border: 0px" alt="edit"/>  
+        <f:param name="applicationId" value="#{_application.id}"/>  
+        <s:conversationId/> 
+      </h:link> 
+    </p:column> 
+  </p:dataTable> 
+</ui:composition>

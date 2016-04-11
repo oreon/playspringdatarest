@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:s="http://jboss.org/schema/seam/taglib" xmlns:wc="http://witchcraft.sourceforge.net/jsf">  
+  <div class="entry errors">
+    <h:messages globalOnly="true"/>
+  </div>  
+  <h:panelGrid columns="6"> 
+    <h:panelGroup> 
+      <h:outputText value="#{msg.id}" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('patient', 'editId')}"/>  
+      <br/>  
+      <h:inputText id="ApplicantSearchId" value="#{applicantList.applicant.id}" size="5"/> 
+    </h:panelGroup>  
+    <h:panelGroup> 
+      <h:outputText value="#{msg.person_gender}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewGender')}"/>  
+      <br/>  
+      <h:selectOneMenu id="gender" value="#{applicantList.applicant.gender}" required="false"> 
+        <f:selectItem itemLabel="Any" itemValue=""/>  
+        <f:selectItem itemLabel="None" itemValue=""/>  
+        <f:selectItem itemValue="MALE" itemLabel="Male"/>  
+        <f:selectItem itemValue="FEMALE" itemLabel="Female"/> 
+      </h:selectOneMenu> 
+    </h:panelGroup>  
+    <h:panelGroup> 
+      <h:outputText value="#{msg.person_dob}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewDob')}"/>  
+      <br/>  
+      <h:outputText value="From"/>  
+      <br/>  
+      <p:calendar value="#{applicantList.dobRange.begin}"/> To
+      <br/>  
+      <p:calendar value="#{applicantList.dobRange.end}"/> 
+    </h:panelGroup>  
+    <h:panelGroup> 
+      <h:outputText value="#{msg.address_street}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewStreet')}"/>  
+      <br/>  
+      <h:inputText id="address_street" value="#{applicantList.applicant.address.street}"/> 
+    </h:panelGroup>  
+    <h:panelGroup> 
+      <h:outputText value="#{msg.address_city}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewCity')}"/>  
+      <br/>  
+      <h:inputText id="address_city" value="#{applicantList.applicant.address.city}"/> 
+    </h:panelGroup>  
+    <h:panelGroup> 
+      <h:outputText value="#{msg.address_province}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewProvince')}"/>  
+      <br/>  
+      <h:inputText id="address_province" value="#{applicantList.applicant.address.province}"/> 
+    </h:panelGroup>  
+    <h:panelGroup> 
+      <h:outputText value="#{msg.applicant_resume}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewResume')}"/>  
+      <br/>  
+      <h:inputText id="resume" value="#{applicantList.applicant.resume}"/> 
+    </h:panelGroup>  
+    <h:panelGroup> 
+      <h:outputText value="#{msg.applicant_coverLetter}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewCoverLetter')}"/>  
+      <br/>  
+      <h:inputText id="coverLetter" value="#{applicantList.applicant.coverLetter}"/> 
+    </h:panelGroup>  
+    <h:panelGroup> 
+      <h:outputText value="#{msg.applicant_firstName}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewFirstName')}"/>  
+      <br/>  
+      <h:inputText id="firstName" value="#{applicantList.applicant.firstName}"/> 
+    </h:panelGroup>  
+    <h:panelGroup> 
+      <h:outputText value="#{msg.applicant_lastName}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewLastName')}"/>  
+      <br/>  
+      <h:inputText id="lastName" value="#{applicantList.applicant.lastName}"/> 
+    </h:panelGroup> 
+  </h:panelGrid>  
+  <h:panelGrid columns="2"> 
+    <h:outputText value="Creation Date From"/>  
+    <h:outputText value="Creation Date To"/>  
+    <p:calendar id="from" value="#{applicantList.dateCreatedRange.begin}"/>  
+    <p:calendar id="to" value="#{applicantList.dateCreatedRange.end}"/> 
+  </h:panelGrid> 
+</ui:composition>

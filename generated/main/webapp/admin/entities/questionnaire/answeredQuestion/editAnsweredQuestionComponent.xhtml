@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:s="http://jboss.org/schema/seam/taglib" xmlns:wc="http://witchcraft.sourceforge.net/jsf">  
+  <h:panelGroup id="editAnsweredQuestionComponentPanel"> 
+    <h:panelGrid columns="1" styleClass="editInfo" columnClasses="leftCol, rightCol"> 
+      <c:if test="${numColumns == null }"> 
+        <c:set var="numColumns" value="4"/> 
+      </c:if>  
+      <h:panelGrid columns="${numColumns}" styleClass="viewInfo" columnClasses="leftCol, rightCol"> 
+        <f:facet name="header"> 
+          <h:outputText value="#{msg.AnsweredQuestion}"/> 
+        </f:facet>  
+        <p:outputLabel value="#{msg.answeredQuestion_question}" for="questionId" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('answeredQuestion', 'viewQuestion')}"/>  
+        <h:panelGroup> 
+          <p:selectOneMenu converter="#{questionList.converter}" id="questionId" label="#{msg.answeredQuestion_question}" value="#{answeredQuestion.question}" escape="false" required="true" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('answeredQuestion', 'editQuestion')) and !excludeQuestion == true}" disabled="#{disabledQuestion == true}"> 
+            <f:selectItem itemLabel="Select One" itemValue=""/>  
+            <f:selectItems value="#{questionList.fetchAll()}" var="itemIter" itemLabel="#{itemIter.displayName}" itemValue="#{itemIter}"/> 
+          </p:selectOneMenu>  
+          <p:message for="questionId"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.answeredQuestion_answeredQuestionnaire}" for="answeredQuestionnaireId" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('answeredQuestion', 'viewAnsweredQuestionnaire')}"/>  
+        <h:panelGroup> 
+          <p:selectOneMenu converter="#{answeredQuestionnaireList.converter}" id="answeredQuestionnaireId" label="#{msg.answeredQuestion_answeredQuestionnaire}" value="#{answeredQuestion.answeredQuestionnaire}" escape="false" required="true" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('answeredQuestion', 'editAnsweredQuestionnaire')) and !excludeAnsweredQuestionnaire == true}" disabled="#{disabledAnsweredQuestionnaire == true}"> 
+            <f:selectItem itemLabel="Select One" itemValue=""/>  
+            <f:selectItems value="#{answeredQuestionnaireList.fetchAll()}" var="itemIter" itemLabel="#{itemIter.displayName}" itemValue="#{itemIter}"/> 
+          </p:selectOneMenu>  
+          <p:message for="answeredQuestionnaireId"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.answeredQuestion_answer}" for="answerId" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('answeredQuestion', 'viewAnswer')}"/>  
+        <h:panelGroup> 
+          <p:selectOneMenu converter="#{answerList.converter}" id="answerId" label="#{msg.answeredQuestion_answer}" value="#{answeredQuestion.answer}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('answeredQuestion', 'editAnswer')) and !excludeAnswer == true}" disabled="#{disabledAnswer == true}"> 
+            <f:selectItem itemLabel="Select One" itemValue=""/>  
+            <f:selectItems value="#{answerList.fetchAll()}" var="itemIter" itemLabel="#{itemIter.displayName}" itemValue="#{itemIter}"/> 
+          </p:selectOneMenu>  
+          <p:message for="answerId"/> 
+        </h:panelGroup> 
+      </h:panelGrid>  
+      <br/>  
+      <br/>  
+      <br/>  
+      <p:panel toggleable="true" header="#{msg.answeredQuestion_answers}" switchType="client"> 
+        <p:dataTable value="#{answeredQuestionAction.listAnswers}" var="item"> 
+          <p:column>#{item.displayName}</p:column> 
+        </p:dataTable> 
+      </p:panel> 
+    </h:panelGrid> 
+  </h:panelGroup> 
+</ui:composition>

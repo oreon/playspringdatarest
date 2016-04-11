@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:s="http://jboss.org/schema/seam/taglib" xmlns:wc="http://witchcraft.sourceforge.net/jsf" template="/admin/template.xhtml">  
+  <ui:define name="content"> 
+    <h:form> 
+      <h:panelGrid styleClass="editInfo"> 
+        <f:facet name="header"> 
+          <h:outputText value="#{sectionAction.isNew() ? 'Create' : 'Edit'}  "/> 
+        </f:facet>  
+        <div id="printable"> 
+          <ui:include src="/admin/entities/questionnaire/section/editSectionComponent.xhtml"> 
+            <ui:param name="section" value="#{sectionAction.instance}"/> 
+          </ui:include> 
+        </div>  
+        <div class="buttonBox"> 
+          <p:commandButton value="Save" update=":#{p:component('editSectionPanel')}" ajax="false" action="#{sectionAction.save(true)}" icon="fa fa-check-circle-o"> 
+            <s:conversationId/> 
+          </p:commandButton>  
+          <h:outputText value=" "/>  
+          <p:commandButton value="Cancel" immediate="true" ajax="false" action="#{sectionAction.cancel}" icon="fa fa-chevron-circle-left"></p:commandButton> 
+        </div> 
+      </h:panelGrid> 
+    </h:form> 
+  </ui:define> 
+</ui:composition>

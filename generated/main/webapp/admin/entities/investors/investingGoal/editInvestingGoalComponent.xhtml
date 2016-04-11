@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:s="http://jboss.org/schema/seam/taglib" xmlns:wc="http://witchcraft.sourceforge.net/jsf">  
+  <h:panelGroup id="editInvestingGoalComponentPanel"> 
+    <h:panelGrid columns="1" styleClass="editInfo" columnClasses="leftCol, rightCol"> 
+      <c:if test="${numColumns == null }"> 
+        <c:set var="numColumns" value="4"/> 
+      </c:if>  
+      <h:panelGrid columns="${numColumns}" styleClass="viewInfo" columnClasses="leftCol, rightCol"> 
+        <f:facet name="header"> 
+          <h:outputText value="#{msg.InvestingGoal}"/> 
+        </f:facet>  
+        <p:outputLabel value="#{msg.investingGoal_nameEng}" for="nameEng" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('investingGoal', 'viewNameEng')}"/>  
+        <h:panelGroup> 
+          <p:inputText id="nameEng" label="#{msg.investingGoal_nameEng}" value="#{investingGoal.nameEng}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('investingGoal', 'editNameEng')) and !excludeNameEng == true}" disabled="#{disabledNameEng == true}"></p:inputText>  
+          <p:message for="nameEng"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.investingGoal_nameFre}" for="nameFre" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('investingGoal', 'viewNameFre')}"/>  
+        <h:panelGroup> 
+          <p:inputText id="nameFre" label="#{msg.investingGoal_nameFre}" value="#{investingGoal.nameFre}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('investingGoal', 'editNameFre')) and !excludeNameFre == true}" disabled="#{disabledNameFre == true}"></p:inputText>  
+          <p:message for="nameFre"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.investingGoal_imageFileIri}" for="imageFileIri" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('investingGoal', 'viewImageFileIri')}"/>  
+        <h:panelGroup> 
+          <p:inputText id="imageFileIri" label="#{msg.investingGoal_imageFileIri}" value="#{investingGoal.imageFileIri}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('investingGoal', 'editImageFileIri')) and !excludeImageFileIri == true}" disabled="#{disabledImageFileIri == true}"></p:inputText>  
+          <p:message for="imageFileIri"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.investingGoal_isDefault}" for="isDefault" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('investingGoal', 'viewIsDefault')}"/>  
+        <h:panelGroup> 
+          <h:selectBooleanCheckbox id="isDefault" label="#{msg.investingGoal_isDefault}" value="#{investingGoal.isDefault}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('investingGoal', 'editIsDefault')) and !excludeIsDefault == true}" disabled="#{disabledIsDefault == true}"/>  
+          <p:message for="isDefault"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.investingGoal_investingGoalPlanCode}" for="investingGoalPlanCodeId" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('investingGoal', 'viewInvestingGoalPlanCode')}"/>  
+        <h:panelGroup> 
+          <p:selectOneMenu converter="#{investingGoalPlanCodeList.converter}" id="investingGoalPlanCodeId" label="#{msg.investingGoal_investingGoalPlanCode}" value="#{investingGoal.investingGoalPlanCode}" escape="false" required="true" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('investingGoal', 'editInvestingGoalPlanCode')) and !excludeInvestingGoalPlanCode == true}" disabled="#{disabledInvestingGoalPlanCode == true}"> 
+            <f:selectItem itemLabel="Select One" itemValue=""/>  
+            <f:selectItems value="#{investingGoalPlanCodeList.fetchAll()}" var="itemIter" itemLabel="#{itemIter.displayName}" itemValue="#{itemIter}"/> 
+          </p:selectOneMenu>  
+          <p:message for="investingGoalPlanCodeId"/> 
+        </h:panelGroup> 
+      </h:panelGrid>  
+      <br/>  
+      <br/> 
+    </h:panelGrid> 
+  </h:panelGroup> 
+</ui:composition>

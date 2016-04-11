@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:s="http://jboss.org/schema/seam/taglib" xmlns:wc="http://witchcraft.sourceforge.net/jsf">  
+  <h:panelGroup id="${panelId == null ? 'viewApplicantPanel' : panelId}"> 
+    <h:panelGrid columns="1" styleClass="viewInfo" columnClasses="leftCol, rightCol"> 
+      <c:if test="${numColumns == null }"> 
+        <c:set var="numColumns" value="2"/> 
+      </c:if>  
+      <h:panelGrid columns="${numColumns}" styleClass="viewInfo" columnClasses="leftCol, rightCol"> 
+        <f:facet name="header"> 
+          <h:outputText value="#{msg.Applicant}"/> 
+        </f:facet>  
+        <h:outputText value="#{msg.person_gender}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewGender')}"/>  
+        <h:outputText value="#{applicant.gender}" escape="false"/>  
+        <h:outputText value="#{msg.person_dob}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewDob')}"/>  
+        <h:outputText value="#{applicant.dob}"> 
+          <s:convertDateTime type="date" dateStyle="medium"/> 
+        </h:outputText>  
+        <h:outputText value="#{msg.applicant_resume}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewResume')}"/>  
+        <h:outputText value="#{applicant.resume}" escape="false"/>  
+        <h:outputText value="#{msg.applicant_coverLetter}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewCoverLetter')}"/>  
+        <h:outputText value="#{applicant.coverLetter}" escape="false"/>  
+        <h:outputText value="#{msg.applicant_firstName}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewFirstName')}"/>  
+        <h:outputText value="#{applicant.firstName}" escape="false"/>  
+        <h:outputText value="#{msg.applicant_lastName}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewLastName')}"/>  
+        <h:outputText value="#{applicant.lastName}" escape="false"/> 
+      </h:panelGrid>  
+      <c:if test="${numColumns == null }"> 
+        <c:set var="numColumns" value="2"/> 
+      </c:if>  
+      <h:panelGrid columns="${numColumns}" styleClass="viewInfo" columnClasses="leftCol, rightCol"> 
+        <f:facet name="header"> 
+          <h:outputText value="#{msg.Address}"/> 
+        </f:facet>  
+        <h:outputText value="#{msg.address_street}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewStreet')}"/>  
+        <h:outputText value="#{applicant.address.street}" escape="false"/>  
+        <h:outputText value="#{msg.address_city}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewCity')}"/>  
+        <h:outputText value="#{applicant.address.city}" escape="false"/>  
+        <h:outputText value="#{msg.address_province}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('applicant', 'viewProvince')}"/>  
+        <h:outputText value="#{applicant.address.province}" escape="false"/> 
+      </h:panelGrid>  
+      <br/>  
+      <br/> 
+    </h:panelGrid> 
+  </h:panelGroup> 
+</ui:composition>

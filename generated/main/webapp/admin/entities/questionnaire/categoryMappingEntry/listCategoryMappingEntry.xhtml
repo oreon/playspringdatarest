@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:s="http://jboss.org/schema/seam/taglib" xmlns:wc="http://witchcraft.sourceforge.net/jsf" template="/admin/template.xhtml">  
+  <ui:define name="content"> 
+    <ui:include src="/admin/entities/questionnaire/categoryMappingEntry/tabMenuCategoryMappingEntryComponent.xhtml"/>  
+    <c:set var="modalId" value="CategoryMappingEntryModalPanel-CategoryMappingEntry"/>  
+    <ui:include src="/admin/entities/questionnaire/categoryMappingEntry/searchCategoryMappingEntryComponent.xhtml"/>  
+    <br/>  
+    <br/>  
+    <br/>  
+    <h:form> 
+      <p:button value="Create New" outcome="/admin/entities/questionnaire/categoryMappingEntry/editCategoryMappingEntry.xhtml" propagation="none"> 
+        <f:param name="categoryMappingEntryId" value="0"/> 
+      </p:button>  
+      <p:commandButton value="Quick Create" update=":#{p:component('editCategoryMappingEntryPanel')}" actionListener="#{categoryMappingEntryAction.setCategoryMappingEntryId(0)}" oncomplete="PF('editCategoryMappingEntryDialog').show()"></p:commandButton> 
+    </h:form>  
+    <br/>  
+    <div id="printable"> 
+      <p:tabView> 
+        <p:tab title="Main"> 
+          <ui:include src="/admin/entities/questionnaire/categoryMappingEntry/listCategoryMappingEntryComponent.xhtml"> 
+            <ui:param name="records" value="#{categoryMappingEntryList.lazyModel}"/> 
+          </ui:include> 
+        </p:tab> 
+      </p:tabView> 
+    </div>  
+    <br/>  
+    <h:form> 
+      <p:button value="Create New" outcome="/admin/entities/questionnaire/categoryMappingEntry/editCategoryMappingEntry.xhtml" propagation="none"> 
+        <f:param name="categoryMappingEntryId" value="0"/> 
+      </p:button>  
+      <p:commandButton value="Quick Create" update=":#{p:component('editCategoryMappingEntryPanel')}" actionListener="#{categoryMappingEntryAction.setCategoryMappingEntryId(0)}" oncomplete="PF('editCategoryMappingEntryDialog').show()"></p:commandButton> 
+    </h:form>  
+    <br/> 
+  </ui:define> 
+</ui:composition>

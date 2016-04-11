@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:s="http://jboss.org/schema/seam/taglib" xmlns:wc="http://witchcraft.sourceforge.net/jsf">  
+  <h:form> 
+    <p:tabView dynamic="true" cache="true"> 
+      <p:tab title="Job"> 
+        <div id="printable"> 
+          <ui:include src="/admin/entities/jobs/job/viewBasicJobComponent.xhtml"> 
+            <ui:param name="job" value="#{jobAction.instance}"/> 
+          </ui:include> 
+        </div>  
+        <div class="buttonBox"> 
+          <h:commandButton value="Edit" rendered="#{s:hasPermission(jobAction.instance, 'edit')}" action="edit"></h:commandButton>  
+          <h:outputText value=" "/>  
+          <h:commandButton value="Back To Listing" action="#{jobAction.cancel}"> 
+            <s:conversationId/> 
+          </h:commandButton> 
+        </div> 
+      </p:tab>  
+      <p:tab title="Company" rendered="#{jobAction.instance.company != null}"> 
+        <h:form> 
+          <ui:include src="/admin/entities/jobs/company/viewBasicCompanyComponent.xhtml"> 
+            <ui:param name="company" value="#{jobAction.instance.company}"/> 
+          </ui:include> 
+        </h:form> 
+      </p:tab> 
+    </p:tabView>  
+    <div class="buttonBox"></div> 
+  </h:form>  
+  <br/>  
+  <p:tabView dynamic="true" cache="true" activeIndex="#{jobAction.currentViewPageTabIndex}"> 
+    <p:ajax event="tabChange" listener="#{jobAction.onViewPageTabChange}"/> 
+  </p:tabView>  
+  <br/>  
+  <p:tabView dynamic="true" cache="true"> 
+    <p:tab title="Notes"> 
+      <wc:comments backingAction="#{jobAction}"/> 
+    </p:tab> 
+  </p:tabView> 
+</ui:composition>

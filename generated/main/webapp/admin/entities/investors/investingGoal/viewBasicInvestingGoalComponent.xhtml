@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:s="http://jboss.org/schema/seam/taglib" xmlns:wc="http://witchcraft.sourceforge.net/jsf">  
+  <h:panelGroup id="${panelId == null ? 'viewInvestingGoalPanel' : panelId}"> 
+    <h:panelGrid columns="1" styleClass="viewInfo" columnClasses="leftCol, rightCol"> 
+      <c:if test="${numColumns == null }"> 
+        <c:set var="numColumns" value="2"/> 
+      </c:if>  
+      <h:panelGrid columns="${numColumns}" styleClass="viewInfo" columnClasses="leftCol, rightCol"> 
+        <f:facet name="header"> 
+          <h:outputText value="#{msg.InvestingGoal}"/> 
+        </f:facet>  
+        <h:outputText value="#{msg.investingGoal_nameEng}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('investingGoal', 'viewNameEng')}"/>  
+        <h:outputText value="#{investingGoal.nameEng}" escape="false"/>  
+        <h:outputText value="#{msg.investingGoal_nameFre}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('investingGoal', 'viewNameFre')}"/>  
+        <h:outputText value="#{investingGoal.nameFre}" escape="false"/>  
+        <h:outputText value="#{msg.investingGoal_imageFileIri}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('investingGoal', 'viewImageFileIri')}"/>  
+        <h:outputText value="#{investingGoal.imageFileIri}" escape="false"/>  
+        <h:outputText value="#{msg.investingGoal_isDefault}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('investingGoal', 'viewIsDefault')}"/>  
+        <h:outputText value="#{investingGoal.isDefault? msg.yes : msg.no }"/>  
+        <h:outputText value="#{msg.investingGoal_investingGoalPlanCode}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('investingGoal', 'viewInvestingGoalPlanCode')}"/>  
+        <h:panelGroup> 
+          <h:link id="investingGoalPlanCodeinvestingGoal_investingGoalPlanCode" escape="false" value="#{investingGoal.investingGoalPlanCode.displayName}" outcome="/admin/entities/investors/investingGoalPlanCode/viewInvestingGoalPlanCode.xhtml" propagation="none"> 
+            <f:param name="id" value="#{investingGoal.investingGoalPlanCode.id}"/>  
+            <f:param name="from" value="#{request.servletPath}"/> 
+          </h:link> 
+        </h:panelGroup> 
+      </h:panelGrid>  
+      <br/>  
+      <br/> 
+    </h:panelGrid> 
+  </h:panelGroup> 
+</ui:composition>

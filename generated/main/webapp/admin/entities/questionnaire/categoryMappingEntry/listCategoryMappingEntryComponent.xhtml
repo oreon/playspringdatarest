@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:s="http://jboss.org/schema/seam/taglib" xmlns:wc="http://witchcraft.sourceforge.net/jsf">  
+  <c:if test="${empty modalId}"> 
+    <c:set var="modalId" value="CategoryMappingEntryModalPanel"/> 
+  </c:if>  
+  <c:if test="${empty listTitle}"> 
+    <c:set var="listTitle" value="CategoryMappingEntry Search Results (#{empty records ? 0 : (categoryMappingEntryList.paginated ? categoryMappingEntryList.resultCount : records.size)})"/> 
+  </c:if>  
+  <h3>${listTitle}</h3>  
+  <h:form> 
+    <ui:include src="/admin/entities/questionnaire/categoryMappingEntry/modalDlgCategoryMappingEntryComponent.xhtml"> 
+      <ui:param name="modalId" value="${modalId}"/>  
+      <ui:param name="categoryMappingEntry" value="#{categoryMappingEntryAction.instance}"/> 
+    </ui:include> 
+  </h:form>  
+  <h:form id="categoryMappingEntryForm"> 
+    <p:dataTable var="_categoryMappingEntry" value="#{records}" id="categoryMappingEntryList" paginator="true" lazy="true" rows="20" selectionMode="single" selection="#{categoryMappingEntryAction.categoryMappingEntry}" tableStyle="width:auto"> 
+      <p:ajax event="rowSelect" update=":#{p:component('editCategoryMappingEntryPanel')}" oncomplete="PF('editCategoryMappingEntryDialog').show()" listener="#{categoryMappingEntryAction.onRowSelect}"/>  
+      <p:column headerText="#{msg.dateCreated}" sortBy="#{categoryMappingEntry.dateCreated}" rendered="#{s:hasPermission('dateCreated', 'viewDateCreated' )}"> 
+        <h:outputText value="#{_categoryMappingEntry.dateCreated}"> 
+          <s:convertDateTime type="date" dateStyle="medium"/> 
+        </h:outputText> 
+      </p:column>  
+      <p:column headerText="#{msg.CategoryMappingEntry} #{msg.id}" sortBy="#{categoryMappingEntry.id}" rendered="#{s:hasPermission('id', 'viewId' )}"> 
+        <h:link outcome="/admin/entities/questionnaire/categoryMappingEntry/viewCategoryMappingEntry.xhtml" rendered="#{s:hasPermission(_categoryMappingEntry, 'view')}" propagation="none"> 
+          <h:outputText value="#{_categoryMappingEntry.id}"/>  
+          <f:param name="categoryMappingEntryId" value="#{_categoryMappingEntry.id}"/> 
+        </h:link> 
+      </p:column>  
+      <p:column headerText="#{msg.mappingEntry_min}" sortBy="#{categoryMappingEntry.min}" rendered="#{ ! excludeMin == true and ( skipPermissionCheck == 'true' || s:hasPermission('categoryMappingEntry', 'viewMin')) }"> 
+        <h:outputText value="#{_categoryMappingEntry.min}" escape="false"/> 
+      </p:column>  
+      <p:column headerText="#{msg.mappingEntry_max}" sortBy="#{categoryMappingEntry.max}" rendered="#{ ! excludeMax == true and ( skipPermissionCheck == 'true' || s:hasPermission('categoryMappingEntry', 'viewMax')) }"> 
+        <h:outputText value="#{_categoryMappingEntry.max}" escape="false"/> 
+      </p:column>  
+      <p:column headerText="#{msg.mappingEntry_outcome}" sortBy="#{categoryMappingEntry.outcome}" rendered="#{ ! excludeOutcome == true and ( skipPermissionCheck == 'true' || s:hasPermission('categoryMappingEntry', 'viewOutcome')) }"> 
+        <h:outputText value="#{_categoryMappingEntry.outcome}" escape="false"/> 
+      </p:column>  
+      <p:column headerText="#{msg.categoryMappingEntry_section}" sortBy="#{categoryMappingEntry.section}" rendered="#{ ! excludeSection == true and ( skipPermissionCheck == 'true' || s:hasPermission('categoryMappingEntry', 'viewSection')) }"> 
+        <h:panelGroup> 
+          <h:link id="sectioncategoryMappingEntry_section" escape="false" value="#{_categoryMappingEntry.section.displayName}" outcome="/admin/entities/questionnaire/section/viewSection.xhtml" propagation="none"> 
+            <f:param name="id" value="#{_categoryMappingEntry.section.id}"/>  
+            <f:param name="from" value="#{request.servletPath}"/> 
+          </h:link> 
+        </h:panelGroup> 
+      </p:column>  
+      <p:column rendered="#{s:hasPermission('_categoryMappingEntry', 'edit') and !_categoryMappingEntryCategory.archived}"> 
+        <h:link outcome="/admin/entities/questionnaire/categoryMappingEntry/editCategoryMappingEntry.xhtml" rendered="#{s:hasPermission(_categoryMappingEntry, 'edit')}"> 
+          <h:graphicImage value="/images/icons/edit.png" style="border: 0px" alt="edit"/>  
+          <f:param name="categoryMappingEntryId" value="#{_categoryMappingEntry.id}"/>  
+          <s:conversationId/> 
+        </h:link> 
+      </p:column>  
+      <p:column rendered="#{s:hasPermission('_categoryMappingEntry', 'view') and !_categoryMappingEntryCategory.archived}"> 
+        <h:link outcome="/admin/entities/questionnaire/categoryMappingEntry/viewCategoryMappingEntry.xhtml" rendered="#{s:hasPermission(_categoryMappingEntry, 'view')}"> 
+          <h:graphicImage value="/images/icons/eye.png" style="border: 0px" alt="view"/>  
+          <f:param name="categoryMappingEntryId" value="#{_categoryMappingEntry.id}"/>  
+          <s:conversationId/> 
+        </h:link> 
+      </p:column>  
+      <p:column rendered="#{s:hasPermission('categoryMappingEntryAction', 'archive')}" propagation="none"> 
+        <h:commandLink action="#{categoryMappingEntryAction.delete(_categoryMappingEntry)}" onclick="javascript:if(!confirm('Do you really want to permanently delete #{_categoryMappingEntry.displayName} ?')){ return false; } else { return true; }">Delete 
+          <f:param name="currentEntityId" value="#{_categoryMappingEntry.id}"/> 
+        </h:commandLink> 
+      </p:column> 
+    </p:dataTable> 
+  </h:form> 
+</ui:composition>

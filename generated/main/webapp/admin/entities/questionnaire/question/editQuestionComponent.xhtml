@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:s="http://jboss.org/schema/seam/taglib" xmlns:wc="http://witchcraft.sourceforge.net/jsf">  
+  <h:panelGroup id="editQuestionComponentPanel"> 
+    <h:panelGrid columns="1" styleClass="editInfo" columnClasses="leftCol, rightCol"> 
+      <c:if test="${numColumns == null }"> 
+        <c:set var="numColumns" value="4"/> 
+      </c:if>  
+      <h:panelGrid columns="${numColumns}" styleClass="viewInfo" columnClasses="leftCol, rightCol"> 
+        <f:facet name="header"> 
+          <h:outputText value="#{msg.Question}"/> 
+        </f:facet>  
+        <p:outputLabel value="#{msg.question_text}" for="text" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('question', 'viewText')}"/>  
+        <h:panelGroup> 
+          <p:inputTextarea id="text" label="#{msg.question_text}" value="#{question.text}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('question', 'editText')) and !excludeText == true}" disabled="#{disabledText == true}" cols="55" rows="5" maxlength="800"/>  
+          <p:message for="text"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.question_section}" for="sectionId" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('question', 'viewSection')}"/>  
+        <h:panelGroup> 
+          <p:selectOneMenu converter="#{sectionList.converter}" id="sectionId" label="#{msg.question_section}" value="#{question.section}" escape="false" required="true" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('question', 'editSection')) and !excludeSection == true}" disabled="#{disabledSection == true}"> 
+            <f:selectItem itemLabel="Select One" itemValue=""/>  
+            <f:selectItems value="#{sectionList.fetchAll()}" var="itemIter" itemLabel="#{itemIter.displayName}" itemValue="#{itemIter}"/> 
+          </p:selectOneMenu>  
+          <p:message for="sectionId"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.question_answerType}" for="answerType" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('question', 'viewAnswerType')}"/>  
+        <h:panelGroup> 
+          <h:selectOneMenu id="answerType" label="#{msg.question_answerType}" value="#{question.answerType}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('question', 'editAnswerType')) and !excludeAnswerType == true}" disabled="#{disabledAnswerType == true}"> 
+            <f:selectItem itemLabel="Please Select..." itemValue=""/>  
+            <f:selectItem itemValue="SINGLE" itemLabel="#{msg.SINGLE}"/>  
+            <f:selectItem itemValue="MULTIPLE" itemLabel="#{msg.MULTIPLE}"/> 
+          </h:selectOneMenu>  
+          <p:message for="answerType"/> 
+        </h:panelGroup> 
+      </h:panelGrid>  
+      <br/>  
+      <p:panel rendered="#{ ! excludeAnswers == true}"> 
+        <f:facet name="header"> 
+          <h:outputText value="#{msg.question_answers}"/> 
+        </f:facet>  
+        <p:commandButton action="#{questionAction.addAnswers}" update="answers, :#{p:component('editQuestionComponentPanel')}" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('question', 'editAnswers')}" id="btnadd_answers" icon="ui-icon-plus"> 
+          <s:conversationId/> 
+        </p:commandButton>  
+        <p:dataTable id="answers" var="answer" tableStyle="width:auto" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('question', 'editAnswers')}" value="#{questionAction.listAnswers}" rowIndexVar="rowIndex"> 
+          <p:column>
+            <f:facet name="header"> 
+              <h:outputText value="#{msg.answer_text}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('answer', 'viewText')}"/> 
+            </f:facet>  
+            <h:panelGroup> 
+              <p:inputTextarea id="text" label="#{msg.answer_text}" value="#{answer.text}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('answer', 'editText')) and !excludeText == true}" disabled="#{disabledText == true}" cols="55" rows="5" maxlength="800"/>  
+              <p:message for="text"/> 
+            </h:panelGroup> 
+          </p:column>  
+          <p:column>
+            <f:facet name="header"> 
+              <h:outputText value="#{msg.answer_score}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('answer', 'viewScore')}"/> 
+            </f:facet>  
+            <h:panelGroup> 
+              <p:spinner size="2" min="0" id="score" label="#{msg.answer_score}" value="#{answer.score}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('answer', 'editScore')) and !excludeScore == true}" disabled="#{disabledScore == true}"/>  
+              <p:message for="score"/> 
+            </h:panelGroup> 
+          </p:column>  
+          <p:column> 
+            <p:commandButton action="#{questionAction.addAnswers}" update="answers, :#{p:component('editQuestionComponentPanel')}" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('answer', 'editAnswers')}" id="btnadd_answers" icon="ui-icon-plus"> 
+              <s:conversationId/> 
+            </p:commandButton> 
+          </p:column>  
+          <p:column> 
+            <p:commandButton immediate="true" action="#{questionAction.deleteAnswers(rowIndex)}" update="answers" process="@this" id="btndelete_answers" icon="ui-icon-close"> 
+              <s:conversationId/> 
+            </p:commandButton> 
+          </p:column> 
+        </p:dataTable> 
+      </p:panel>  
+      <br/> 
+    </h:panelGrid> 
+  </h:panelGroup> 
+</ui:composition>

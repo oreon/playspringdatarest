@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:s="http://jboss.org/schema/seam/taglib" xmlns:wc="http://witchcraft.sourceforge.net/jsf">  
+  <h:panelGroup id="${panelId == null ? 'viewCategoryMappingEntryPanel' : panelId}"> 
+    <h:panelGrid columns="1" styleClass="viewInfo" columnClasses="leftCol, rightCol"> 
+      <c:if test="${numColumns == null }"> 
+        <c:set var="numColumns" value="2"/> 
+      </c:if>  
+      <h:panelGrid columns="${numColumns}" styleClass="viewInfo" columnClasses="leftCol, rightCol"> 
+        <f:facet name="header"> 
+          <h:outputText value="#{msg.CategoryMappingEntry}"/> 
+        </f:facet>  
+        <h:outputText value="#{msg.mappingEntry_min}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('categoryMappingEntry', 'viewMin')}"/>  
+        <h:outputText value="#{categoryMappingEntry.min}" escape="false"/>  
+        <h:outputText value="#{msg.mappingEntry_max}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('categoryMappingEntry', 'viewMax')}"/>  
+        <h:outputText value="#{categoryMappingEntry.max}" escape="false"/>  
+        <h:outputText value="#{msg.mappingEntry_outcome}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('categoryMappingEntry', 'viewOutcome')}"/>  
+        <h:outputText value="#{categoryMappingEntry.outcome}" escape="false"/>  
+        <h:outputText value="#{msg.categoryMappingEntry_section}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('categoryMappingEntry', 'viewSection')}"/>  
+        <h:panelGroup> 
+          <h:link id="sectioncategoryMappingEntry_section" escape="false" value="#{categoryMappingEntry.section.displayName}" outcome="/admin/entities/questionnaire/section/viewSection.xhtml" propagation="none"> 
+            <f:param name="id" value="#{categoryMappingEntry.section.id}"/>  
+            <f:param name="from" value="#{request.servletPath}"/> 
+          </h:link> 
+        </h:panelGroup> 
+      </h:panelGrid>  
+      <br/>  
+      <br/> 
+    </h:panelGrid> 
+  </h:panelGroup> 
+</ui:composition>

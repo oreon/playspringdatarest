@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:s="http://jboss.org/schema/seam/taglib" xmlns:wc="http://witchcraft.sourceforge.net/jsf">  
+  <h:panelGroup id="editAnsweredQuestionnaireComponentPanel"> 
+    <h:panelGrid columns="1" styleClass="editInfo" columnClasses="leftCol, rightCol"> 
+      <c:if test="${numColumns == null }"> 
+        <c:set var="numColumns" value="4"/> 
+      </c:if>  
+      <h:panelGrid columns="${numColumns}" styleClass="viewInfo" columnClasses="leftCol, rightCol"> 
+        <f:facet name="header"> 
+          <h:outputText value="#{msg.AnsweredQuestionnaire}"/> 
+        </f:facet>  
+        <p:outputLabel value="#{msg.answeredQuestionnaire_questionnaire}" for="questionnaireId" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('answeredQuestionnaire', 'viewQuestionnaire')}"/>  
+        <h:panelGroup> 
+          <p:selectOneMenu converter="#{questionnaireList.converter}" id="questionnaireId" label="#{msg.answeredQuestionnaire_questionnaire}" value="#{answeredQuestionnaire.questionnaire}" escape="false" required="true" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('answeredQuestionnaire', 'editQuestionnaire')) and !excludeQuestionnaire == true}" disabled="#{disabledQuestionnaire == true}"> 
+            <f:selectItem itemLabel="Select One" itemValue=""/>  
+            <f:selectItems value="#{questionnaireList.fetchAll()}" var="itemIter" itemLabel="#{itemIter.displayName}" itemValue="#{itemIter}"/> 
+          </p:selectOneMenu>  
+          <p:message for="questionnaireId"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.answeredQuestionnaire_customer}" for="customerId" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('answeredQuestionnaire', 'viewCustomer')}"/>  
+        <h:panelGroup> 
+          <p:selectOneMenu converter="#{customerList.converter}" id="customerId" label="#{msg.answeredQuestionnaire_customer}" value="#{answeredQuestionnaire.customer}" escape="false" required="true" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('answeredQuestionnaire', 'editCustomer')) and !excludeCustomer == true}" disabled="#{disabledCustomer == true}"> 
+            <f:selectItem itemLabel="Select One" itemValue=""/>  
+            <f:selectItems value="#{customerList.fetchAll()}" var="itemIter" itemLabel="#{itemIter.displayName}" itemValue="#{itemIter}"/> 
+          </p:selectOneMenu>  
+          <p:message for="customerId"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.answeredQuestionnaire_remarks}" for="remarks" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('answeredQuestionnaire', 'viewRemarks')}"/>  
+        <h:panelGroup> 
+          <p:inputTextarea id="remarks" label="#{msg.answeredQuestionnaire_remarks}" value="#{answeredQuestionnaire.remarks}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('answeredQuestionnaire', 'editRemarks')) and !excludeRemarks == true}" disabled="#{disabledRemarks == true}" cols="55" rows="5" maxlength="800"/>  
+          <p:message for="remarks"/> 
+        </h:panelGroup> 
+      </h:panelGrid>  
+      <br/>  
+      <p:panel rendered="#{ ! excludeAnsweredQuestions == true}"> 
+        <f:facet name="header"> 
+          <h:outputText value="#{msg.answeredQuestionnaire_answeredQuestions}"/> 
+        </f:facet>  
+        <p:commandButton action="#{answeredQuestionnaireAction.addAnsweredQuestions}" update="answeredQuestions, :#{p:component('editAnsweredQuestionnaireComponentPanel')}" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('answeredQuestionnaire', 'editAnsweredQuestions')}" id="btnadd_answeredQuestions" icon="ui-icon-plus"> 
+          <s:conversationId/> 
+        </p:commandButton>  
+        <p:dataTable id="answeredQuestions" var="answeredQuestion" tableStyle="width:auto" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('answeredQuestionnaire', 'editAnsweredQuestions')}" value="#{answeredQuestionnaireAction.listAnsweredQuestions}" rowIndexVar="rowIndex"> 
+          <p:column>
+            <f:facet name="header"> 
+              <h:outputText value="#{msg.answeredQuestion_question}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('answeredQuestion', 'viewQuestion')}"/> 
+            </f:facet>  
+            <h:panelGroup> 
+              <p:selectOneMenu converter="#{questionList.converter}" id="questionId" label="#{msg.answeredQuestion_question}" value="#{answeredQuestion.question}" escape="false" required="true" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('answeredQuestion', 'editQuestion')) and !excludeQuestion == true}" disabled="#{disabledQuestion == true}"> 
+                <f:selectItem itemLabel="Select One" itemValue=""/>  
+                <f:selectItems value="#{questionList.fetchAll()}" var="itemIter" itemLabel="#{itemIter.displayName}" itemValue="#{itemIter}"/> 
+              </p:selectOneMenu>  
+              <p:message for="questionId"/> 
+            </h:panelGroup> 
+          </p:column>  
+          <p:column>
+            <f:facet name="header"> 
+              <h:outputText value="#{msg.answeredQuestion_answer}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('answeredQuestion', 'viewAnswer')}"/> 
+            </f:facet>  
+            <h:panelGroup> 
+              <p:selectOneMenu converter="#{answerList.converter}" id="answerId" label="#{msg.answeredQuestion_answer}" value="#{answeredQuestion.answer}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('answeredQuestion', 'editAnswer')) and !excludeAnswer == true}" disabled="#{disabledAnswer == true}"> 
+                <f:selectItem itemLabel="Select One" itemValue=""/>  
+                <f:selectItems value="#{answerList.fetchAll()}" var="itemIter" itemLabel="#{itemIter.displayName}" itemValue="#{itemIter}"/> 
+              </p:selectOneMenu>  
+              <p:message for="answerId"/> 
+            </h:panelGroup> 
+          </p:column>  
+          <p:column> 
+            <p:commandButton action="#{answeredQuestionnaireAction.addAnsweredQuestions}" update="answeredQuestions, :#{p:component('editAnsweredQuestionnaireComponentPanel')}" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('answeredQuestion', 'editAnsweredQuestions')}" id="btnadd_answeredQuestions" icon="ui-icon-plus"> 
+              <s:conversationId/> 
+            </p:commandButton> 
+          </p:column>  
+          <p:column> 
+            <p:commandButton immediate="true" action="#{answeredQuestionnaireAction.deleteAnsweredQuestions(rowIndex)}" update="answeredQuestions" process="@this" id="btndelete_answeredQuestions" icon="ui-icon-close"> 
+              <s:conversationId/> 
+            </p:commandButton> 
+          </p:column> 
+        </p:dataTable> 
+      </p:panel>  
+      <br/> 
+    </h:panelGrid> 
+  </h:panelGroup> 
+</ui:composition>

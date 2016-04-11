@@ -1,0 +1,273 @@
+    
+	
+{
+ "model":"com.td.bbwp.commerce.Employee"
+ "pk": 1,
+ "fields": {
+  
+
+	
+	
+	"gender": 1 ,
+
+
+	
+	"dob":dateFormat.parse("2016.03.31 06:30:47 EDT"),
+
+
+	
+	"department":1,
+
+
+	
+	"firstName":"alpha",
+
+
+	
+	"lastName":"delta",
+
+	
+  address:{
+	
+
+	
+	
+	"street":"John",
+
+
+	
+	"city":"zeta",
+
+
+	
+	"province":"delta",
+
+		
+
+  }		
+		
+
+ }
+}
+
+{
+ "model":"com.td.bbwp.commerce.Department"
+ "pk": 1,
+ "fields": {
+  
+
+	
+	
+	"name":"Eric",
+
+		
+
+ }
+}
+
+{
+ "model":"com.td.bbwp.commerce.Customer"
+ "pk": 1,
+ "fields": {
+  
+
+	
+	
+	"gender": 1 ,
+
+
+	
+	"dob":dateFormat.parse("2016.04.20 05:12:29 EDT"),
+
+
+	
+	"firstName":"zeta",
+
+
+	
+	"lastName":"epsilon",
+
+	
+  address:{
+	
+
+	
+	
+	"street":"gamma",
+
+
+	
+	"city":"John",
+
+
+	
+	"province":"delta",
+
+		
+
+  }		
+		
+
+ }
+}
+
+{
+ "model":"com.td.bbwp.commerce.CustomerOrder"
+ "pk": 1,
+ "fields": {
+  
+
+	
+	
+	"notes":"pi",
+
+
+	
+	"customer":1,
+
+
+	
+	"shipDate":dateFormat.parse("2016.03.27 07:28:37 EDT"),
+
+
+	
+	"paymentMethod":1,
+
+		
+
+ }
+}
+
+{
+ "model":"com.td.bbwp.commerce.Product"
+ "pk": 1,
+ "fields": {
+  
+
+	
+	
+	"name":"alpha",
+
+		
+
+ }
+}
+
+{
+ "model":"com.td.bbwp.commerce.OrderItem"
+ "pk": 1,
+ "fields": {
+  
+
+	
+	
+	"qty":3531,
+
+
+	
+	"product":1,
+
+
+	
+	"customerOrder":1,
+
+		
+
+ }
+}
+
+{
+ "model":"com.td.bbwp.commerce.PaymentMethod"
+ "pk": 1,
+ "fields": {
+  
+
+	
+	
+	"accountAddress":"Malissa",
+
+		
+
+ }
+}
+
+{
+ "model":"com.td.bbwp.commerce.CreditCard"
+ "pk": 1,
+ "fields": {
+  
+
+	
+	
+	"accountAddress":"Malissa",
+
+
+	
+	"ccNumber":"theta",
+
+
+	
+	"expiry":dateFormat.parse("2016.03.19 03:18:37 EDT"),
+
+		
+
+ }
+}
+
+{
+ "model":"com.td.bbwp.commerce.PayPal"
+ "pk": 1,
+ "fields": {
+  
+
+	
+	
+	"accountAddress":"pi",
+
+
+	
+	"paypalAccountNumber":"alpha",
+
+		
+
+ }
+}
+
+{
+ "model":"com.td.bbwp.users.AppUser"
+ "pk": 1,
+ "fields": {
+  
+
+	
+	
+	"userName":"gamma",
+
+
+	
+	"password":"epsilon",
+
+
+	
+	"enabled":true,
+
+		
+
+ }
+}
+
+{
+ "model":"com.td.bbwp.users.AppRole"
+ "pk": 1,
+ "fields": {
+  
+
+	
+	
+	"name":"Malissa",
+
+		
+
+ }
+}
+

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:s="http://jboss.org/schema/seam/taglib" xmlns:wc="http://witchcraft.sourceforge.net/jsf">  
+  <div class="entry errors">
+    <h:messages globalOnly="true"/>
+  </div>  
+  <h:panelGrid columns="6"> 
+    <h:panelGroup> 
+      <h:outputText value="#{msg.id}" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('patient', 'editId')}"/>  
+      <br/>  
+      <h:inputText id="MappingEntrySearchId" value="#{mappingEntryList.mappingEntry.id}" size="5"/> 
+    </h:panelGroup>  
+    <h:panelGroup> 
+      <h:outputText value="#{msg.mappingEntry_min}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('mappingEntry', 'viewMin')}"/>  
+      <br/>  
+      <h:inputText id="min_begin" value="#{mappingEntryList.minRange.begin}"> 
+        <f:converter converterId="javax.faces.Integer"/> 
+      </h:inputText>  
+      <h:inputText id="min_end" value="#{mappingEntryList.minRange.end}"> 
+        <f:converter converterId="javax.faces.Integer"/> 
+      </h:inputText> 
+    </h:panelGroup>  
+    <h:panelGroup> 
+      <h:outputText value="#{msg.mappingEntry_max}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('mappingEntry', 'viewMax')}"/>  
+      <br/>  
+      <h:inputText id="max_begin" value="#{mappingEntryList.maxRange.begin}"> 
+        <f:converter converterId="javax.faces.Integer"/> 
+      </h:inputText>  
+      <h:inputText id="max_end" value="#{mappingEntryList.maxRange.end}"> 
+        <f:converter converterId="javax.faces.Integer"/> 
+      </h:inputText> 
+    </h:panelGroup>  
+    <h:panelGroup> 
+      <h:outputText value="#{msg.mappingEntry_outcome}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('mappingEntry', 'viewOutcome')}"/>  
+      <br/>  
+      <h:selectOneMenu id="outcome" value="#{mappingEntryList.mappingEntry.outcome}" required="false"> 
+        <f:selectItem itemLabel="Any" itemValue=""/>  
+        <f:selectItem itemLabel="None" itemValue=""/>  
+        <f:selectItem itemValue="VERY_CONSERVATIVE" itemLabel="Very_conservative"/>  
+        <f:selectItem itemValue="CONSERVATIVE" itemLabel="Conservative"/>  
+        <f:selectItem itemValue="GROWTH" itemLabel="Growth"/>  
+        <f:selectItem itemValue="AGGRESSIVE_GROWTH" itemLabel="Aggressive_growth"/> 
+      </h:selectOneMenu> 
+    </h:panelGroup> 
+  </h:panelGrid>  
+  <h:panelGrid columns="2"> 
+    <h:outputText value="Creation Date From"/>  
+    <h:outputText value="Creation Date To"/>  
+    <p:calendar id="from" value="#{mappingEntryList.dateCreatedRange.begin}"/>  
+    <p:calendar id="to" value="#{mappingEntryList.dateCreatedRange.end}"/> 
+  </h:panelGrid> 
+</ui:composition>

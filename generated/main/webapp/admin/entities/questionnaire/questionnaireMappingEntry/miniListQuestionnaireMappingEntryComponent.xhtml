@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:s="http://jboss.org/schema/seam/taglib" xmlns:wc="http://witchcraft.sourceforge.net/jsf">  
+  <p:dataTable var="_questionnaireMappingEntry" value="#{records}" tableStyle="width:auto"> 
+    <p:column headerText="#{msg.QuestionnaireMappingEntry} #{msg.id}" sortBy="#{questionnaireMappingEntry.id}" rendered="#{s:hasPermission('id', 'viewId' )}"> 
+      <h:link outcome="/admin/entities/questionnaire/questionnaireMappingEntry/viewQuestionnaireMappingEntry.xhtml" rendered="#{s:hasPermission(_questionnaireMappingEntry, 'view')}" propagation="none"> 
+        <h:outputText value="#{_questionnaireMappingEntry.id}"/>  
+        <f:param name="questionnaireMappingEntryId" value="#{_questionnaireMappingEntry.id}"/> 
+      </h:link> 
+    </p:column>  
+    <p:column headerText="#{msg.mappingEntry_min}" sortBy="#{questionnaireMappingEntry.min}" rendered="#{ ! excludeMin == true and ( skipPermissionCheck == 'true' || s:hasPermission('questionnaireMappingEntry', 'viewMin')) }"> 
+      <h:outputText value="#{_questionnaireMappingEntry.min}" escape="false"/> 
+    </p:column>  
+    <p:column headerText="#{msg.mappingEntry_max}" sortBy="#{questionnaireMappingEntry.max}" rendered="#{ ! excludeMax == true and ( skipPermissionCheck == 'true' || s:hasPermission('questionnaireMappingEntry', 'viewMax')) }"> 
+      <h:outputText value="#{_questionnaireMappingEntry.max}" escape="false"/> 
+    </p:column>  
+    <p:column headerText="#{msg.mappingEntry_outcome}" sortBy="#{questionnaireMappingEntry.outcome}" rendered="#{ ! excludeOutcome == true and ( skipPermissionCheck == 'true' || s:hasPermission('questionnaireMappingEntry', 'viewOutcome')) }"> 
+      <h:outputText value="#{_questionnaireMappingEntry.outcome}" escape="false"/> 
+    </p:column>  
+    <p:column headerText="#{msg.questionnaireMappingEntry_questionnaire}" sortBy="#{questionnaireMappingEntry.questionnaire}" rendered="#{ ! excludeQuestionnaire == true and ( skipPermissionCheck == 'true' || s:hasPermission('questionnaireMappingEntry', 'viewQuestionnaire')) }"> 
+      <h:panelGroup> 
+        <h:link id="questionnairequestionnaireMappingEntry_questionnaire" escape="false" value="#{_questionnaireMappingEntry.questionnaire.displayName}" outcome="/admin/entities/questionnaire/questionnaire/viewQuestionnaire.xhtml" propagation="none"> 
+          <f:param name="id" value="#{_questionnaireMappingEntry.questionnaire.id}"/>  
+          <f:param name="from" value="#{request.servletPath}"/> 
+        </h:link> 
+      </h:panelGroup> 
+    </p:column>  
+    <p:column rendered="#{s:hasPermission('_questionnaireMappingEntry', 'edit') and !_questionnaireMappingEntryCategory.archived}"> 
+      <h:link outcome="/admin/entities/questionnaire/questionnaireMappingEntry/editQuestionnaireMappingEntry.xhtml" rendered="#{s:hasPermission(_questionnaireMappingEntry, 'edit')}"> 
+        <h:graphicImage value="/images/icons/edit.png" style="border: 0px" alt="edit"/>  
+        <f:param name="questionnaireMappingEntryId" value="#{_questionnaireMappingEntry.id}"/>  
+        <s:conversationId/> 
+      </h:link> 
+    </p:column> 
+  </p:dataTable> 
+</ui:composition>

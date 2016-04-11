@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:s="http://jboss.org/schema/seam/taglib" xmlns:wc="http://witchcraft.sourceforge.net/jsf">  
+  <h:panelGroup id="editCategoryMappingEntryComponentPanel"> 
+    <h:panelGrid columns="1" styleClass="editInfo" columnClasses="leftCol, rightCol"> 
+      <c:if test="${numColumns == null }"> 
+        <c:set var="numColumns" value="4"/> 
+      </c:if>  
+      <h:panelGrid columns="${numColumns}" styleClass="viewInfo" columnClasses="leftCol, rightCol"> 
+        <f:facet name="header"> 
+          <h:outputText value="#{msg.CategoryMappingEntry}"/> 
+        </f:facet>  
+        <p:outputLabel value="#{msg.mappingEntry_min}" for="min" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('categoryMappingEntry', 'viewMin')}"/>  
+        <h:panelGroup> 
+          <p:spinner size="2" min="0" id="min" label="#{msg.mappingEntry_min}" value="#{categoryMappingEntry.min}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('categoryMappingEntry', 'editMin')) and !excludeMin == true}" disabled="#{disabledMin == true}"/>  
+          <p:message for="min"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.mappingEntry_max}" for="max" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('categoryMappingEntry', 'viewMax')}"/>  
+        <h:panelGroup> 
+          <p:spinner size="2" min="0" id="max" label="#{msg.mappingEntry_max}" value="#{categoryMappingEntry.max}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('categoryMappingEntry', 'editMax')) and !excludeMax == true}" disabled="#{disabledMax == true}"/>  
+          <p:message for="max"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.mappingEntry_outcome}" for="outcome" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('categoryMappingEntry', 'viewOutcome')}"/>  
+        <h:panelGroup> 
+          <h:selectOneMenu id="outcome" label="#{msg.mappingEntry_outcome}" value="#{categoryMappingEntry.outcome}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('categoryMappingEntry', 'editOutcome')) and !excludeOutcome == true}" disabled="#{disabledOutcome == true}"> 
+            <f:selectItem itemLabel="Please Select..." itemValue=""/>  
+            <f:selectItem itemValue="VERY_CONSERVATIVE" itemLabel="#{msg.VERY_CONSERVATIVE}"/>  
+            <f:selectItem itemValue="CONSERVATIVE" itemLabel="#{msg.CONSERVATIVE}"/>  
+            <f:selectItem itemValue="GROWTH" itemLabel="#{msg.GROWTH}"/>  
+            <f:selectItem itemValue="AGGRESSIVE_GROWTH" itemLabel="#{msg.AGGRESSIVE_GROWTH}"/> 
+          </h:selectOneMenu>  
+          <p:message for="outcome"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.categoryMappingEntry_section}" for="sectionId" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('categoryMappingEntry', 'viewSection')}"/>  
+        <h:panelGroup> 
+          <p:selectOneMenu converter="#{sectionList.converter}" id="sectionId" label="#{msg.categoryMappingEntry_section}" value="#{categoryMappingEntry.section}" escape="false" required="true" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('categoryMappingEntry', 'editSection')) and !excludeSection == true}" disabled="#{disabledSection == true}"> 
+            <f:selectItem itemLabel="Select One" itemValue=""/>  
+            <f:selectItems value="#{sectionList.fetchAll()}" var="itemIter" itemLabel="#{itemIter.displayName}" itemValue="#{itemIter}"/> 
+          </p:selectOneMenu>  
+          <p:message for="sectionId"/> 
+        </h:panelGroup> 
+      </h:panelGrid>  
+      <br/>  
+      <br/> 
+    </h:panelGrid> 
+  </h:panelGroup> 
+</ui:composition>

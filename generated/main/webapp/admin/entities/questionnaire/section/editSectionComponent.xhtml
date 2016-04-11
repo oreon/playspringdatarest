@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:s="http://jboss.org/schema/seam/taglib" xmlns:wc="http://witchcraft.sourceforge.net/jsf">  
+  <h:panelGroup id="editSectionComponentPanel"> 
+    <h:panelGrid columns="1" styleClass="editInfo" columnClasses="leftCol, rightCol"> 
+      <c:if test="${numColumns == null }"> 
+        <c:set var="numColumns" value="4"/> 
+      </c:if>  
+      <h:panelGrid columns="${numColumns}" styleClass="viewInfo" columnClasses="leftCol, rightCol"> 
+        <f:facet name="header"> 
+          <h:outputText value="#{msg.Section}"/> 
+        </f:facet>  
+        <p:outputLabel value="#{msg.section_name}" for="name" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('section', 'viewName')}"/>  
+        <h:panelGroup> 
+          <p:inputText id="name" label="#{msg.section_name}" value="#{section.name}" escape="false" required="true" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('section', 'editName')) and !excludeName == true}" disabled="#{disabledName == true}"> 
+            <f:converter converterId="witchcraft.ui.jsf.capitalizeConverter"/> 
+          </p:inputText>  
+          <p:message for="name"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.section_questionnaire}" for="questionnaireId" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('section', 'viewQuestionnaire')}"/>  
+        <h:panelGroup> 
+          <p:selectOneMenu converter="#{questionnaireList.converter}" id="questionnaireId" label="#{msg.section_questionnaire}" value="#{section.questionnaire}" escape="false" required="true" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('section', 'editQuestionnaire')) and !excludeQuestionnaire == true}" disabled="#{disabledQuestionnaire == true}"> 
+            <f:selectItem itemLabel="Select One" itemValue=""/>  
+            <f:selectItems value="#{questionnaireList.fetchAll()}" var="itemIter" itemLabel="#{itemIter.displayName}" itemValue="#{itemIter}"/> 
+          </p:selectOneMenu>  
+          <p:message for="questionnaireId"/> 
+        </h:panelGroup> 
+      </h:panelGrid>  
+      <br/>  
+      <p:panel rendered="#{ ! excludeQuestions == true}"> 
+        <f:facet name="header"> 
+          <h:outputText value="#{msg.section_questions}"/> 
+        </f:facet>  
+        <p:commandButton action="#{sectionAction.addQuestions}" update="questions, :#{p:component('editSectionComponentPanel')}" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('section', 'editQuestions')}" id="btnadd_questions" icon="ui-icon-plus"> 
+          <s:conversationId/> 
+        </p:commandButton>  
+        <p:dataTable id="questions" var="question" tableStyle="width:auto" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('section', 'editQuestions')}" value="#{sectionAction.listQuestions}" rowIndexVar="rowIndex"> 
+          <p:column>
+            <f:facet name="header"> 
+              <h:outputText value="#{msg.question_text}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('question', 'viewText')}"/> 
+            </f:facet>  
+            <h:panelGroup> 
+              <p:inputTextarea id="text" label="#{msg.question_text}" value="#{question.text}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('question', 'editText')) and !excludeText == true}" disabled="#{disabledText == true}" cols="55" rows="5" maxlength="800"/>  
+              <p:message for="text"/> 
+            </h:panelGroup> 
+          </p:column>  
+          <p:column>
+            <f:facet name="header"> 
+              <h:outputText value="#{msg.question_answerType}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('question', 'viewAnswerType')}"/> 
+            </f:facet>  
+            <h:panelGroup> 
+              <h:selectOneMenu id="answerType" label="#{msg.question_answerType}" value="#{question.answerType}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('question', 'editAnswerType')) and !excludeAnswerType == true}" disabled="#{disabledAnswerType == true}"> 
+                <f:selectItem itemLabel="Please Select..." itemValue=""/>  
+                <f:selectItem itemValue="SINGLE" itemLabel="#{msg.SINGLE}"/>  
+                <f:selectItem itemValue="MULTIPLE" itemLabel="#{msg.MULTIPLE}"/> 
+              </h:selectOneMenu>  
+              <p:message for="answerType"/> 
+            </h:panelGroup> 
+          </p:column>  
+          <p:column> 
+            <p:commandButton action="#{sectionAction.addQuestions}" update="questions, :#{p:component('editSectionComponentPanel')}" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('question', 'editQuestions')}" id="btnadd_questions" icon="ui-icon-plus"> 
+              <s:conversationId/> 
+            </p:commandButton> 
+          </p:column>  
+          <p:column> 
+            <p:commandButton immediate="true" action="#{sectionAction.deleteQuestions(rowIndex)}" update="questions" process="@this" id="btndelete_questions" icon="ui-icon-close"> 
+              <s:conversationId/> 
+            </p:commandButton> 
+          </p:column> 
+        </p:dataTable> 
+      </p:panel>  
+      <p:panel rendered="#{ ! excludeCategoryMappingEntrys == true}"> 
+        <f:facet name="header"> 
+          <h:outputText value="#{msg.section_categoryMappingEntrys}"/> 
+        </f:facet>  
+        <p:commandButton action="#{sectionAction.addCategoryMappingEntrys}" update="categoryMappingEntrys, :#{p:component('editSectionComponentPanel')}" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('question', 'editCategoryMappingEntrys')}" id="btnadd_categoryMappingEntrys" icon="ui-icon-plus"> 
+          <s:conversationId/> 
+        </p:commandButton>  
+        <p:dataTable id="categoryMappingEntrys" var="categoryMappingEntry" tableStyle="width:auto" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('question', 'editCategoryMappingEntrys')}" value="#{sectionAction.listCategoryMappingEntrys}" rowIndexVar="rowIndex"> 
+          <p:column>
+            <f:facet name="header"> 
+              <h:outputText value="#{msg.mappingEntry_min}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('categoryMappingEntry', 'viewMin')}"/> 
+            </f:facet>  
+            <h:panelGroup> 
+              <p:spinner size="2" min="0" id="min" label="#{msg.mappingEntry_min}" value="#{categoryMappingEntry.min}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('categoryMappingEntry', 'editMin')) and !excludeMin == true}" disabled="#{disabledMin == true}"/>  
+              <p:message for="min"/> 
+            </h:panelGroup> 
+          </p:column>  
+          <p:column>
+            <f:facet name="header"> 
+              <h:outputText value="#{msg.mappingEntry_max}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('categoryMappingEntry', 'viewMax')}"/> 
+            </f:facet>  
+            <h:panelGroup> 
+              <p:spinner size="2" min="0" id="max" label="#{msg.mappingEntry_max}" value="#{categoryMappingEntry.max}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('categoryMappingEntry', 'editMax')) and !excludeMax == true}" disabled="#{disabledMax == true}"/>  
+              <p:message for="max"/> 
+            </h:panelGroup> 
+          </p:column>  
+          <p:column>
+            <f:facet name="header"> 
+              <h:outputText value="#{msg.mappingEntry_outcome}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('categoryMappingEntry', 'viewOutcome')}"/> 
+            </f:facet>  
+            <h:panelGroup> 
+              <h:selectOneMenu id="outcome" label="#{msg.mappingEntry_outcome}" value="#{categoryMappingEntry.outcome}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('categoryMappingEntry', 'editOutcome')) and !excludeOutcome == true}" disabled="#{disabledOutcome == true}"> 
+                <f:selectItem itemLabel="Please Select..." itemValue=""/>  
+                <f:selectItem itemValue="VERY_CONSERVATIVE" itemLabel="#{msg.VERY_CONSERVATIVE}"/>  
+                <f:selectItem itemValue="CONSERVATIVE" itemLabel="#{msg.CONSERVATIVE}"/>  
+                <f:selectItem itemValue="GROWTH" itemLabel="#{msg.GROWTH}"/>  
+                <f:selectItem itemValue="AGGRESSIVE_GROWTH" itemLabel="#{msg.AGGRESSIVE_GROWTH}"/> 
+              </h:selectOneMenu>  
+              <p:message for="outcome"/> 
+            </h:panelGroup> 
+          </p:column>  
+          <p:column> 
+            <p:commandButton action="#{sectionAction.addCategoryMappingEntrys}" update="categoryMappingEntrys, :#{p:component('editSectionComponentPanel')}" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('categoryMappingEntry', 'editCategoryMappingEntrys')}" id="btnadd_categoryMappingEntrys" icon="ui-icon-plus"> 
+              <s:conversationId/> 
+            </p:commandButton> 
+          </p:column>  
+          <p:column> 
+            <p:commandButton immediate="true" action="#{sectionAction.deleteCategoryMappingEntrys(rowIndex)}" update="categoryMappingEntrys" process="@this" id="btndelete_categoryMappingEntrys" icon="ui-icon-close"> 
+              <s:conversationId/> 
+            </p:commandButton> 
+          </p:column> 
+        </p:dataTable> 
+      </p:panel>  
+      <br/> 
+    </h:panelGrid> 
+  </h:panelGroup> 
+</ui:composition>

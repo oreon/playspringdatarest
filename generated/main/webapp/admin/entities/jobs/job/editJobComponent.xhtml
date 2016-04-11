@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:s="http://jboss.org/schema/seam/taglib" xmlns:wc="http://witchcraft.sourceforge.net/jsf">  
+  <h:panelGroup id="editJobComponentPanel"> 
+    <h:panelGrid columns="1" styleClass="editInfo" columnClasses="leftCol, rightCol"> 
+      <c:if test="${numColumns == null }"> 
+        <c:set var="numColumns" value="4"/> 
+      </c:if>  
+      <h:panelGrid columns="${numColumns}" styleClass="viewInfo" columnClasses="leftCol, rightCol"> 
+        <f:facet name="header"> 
+          <h:outputText value="#{msg.Job}"/> 
+        </f:facet>  
+        <p:outputLabel value="#{msg.job_title}" for="title" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('job', 'viewTitle')}"/>  
+        <h:panelGroup> 
+          <p:inputText id="title" label="#{msg.job_title}" value="#{job.title}" escape="false" required="true" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('job', 'editTitle')) and !excludeTitle == true}" disabled="#{disabledTitle == true}"> 
+            <f:converter converterId="witchcraft.ui.jsf.capitalizeConverter"/> 
+          </p:inputText>  
+          <p:message for="title"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.job_description}" for="description" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('job', 'viewDescription')}"/>  
+        <h:panelGroup> 
+          <p:inputTextarea id="description" label="#{msg.job_description}" value="#{job.description}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('job', 'editDescription')) and !excludeDescription == true}" disabled="#{disabledDescription == true}" cols="55" rows="5" maxlength="800"/>  
+          <p:message for="description"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.job_activationDate}" for="activationDate" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('job', 'viewActivationDate')}"/>  
+        <h:panelGroup> 
+          <p:calendar id="activationDate" label="#{msg.job_activationDate}" value="#{job.activationDate}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('job', 'editActivationDate')) and !excludeActivationDate == true}" disabled="#{disabledActivationDate == true}" navigator="true"/>  
+          <p:message for="activationDate"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.job_company}" for="companyId" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('job', 'viewCompany')}"/>  
+        <h:panelGroup> 
+          <p:selectOneMenu converter="#{companyList.converter}" id="companyId" label="#{msg.job_company}" value="#{job.company}" escape="false" required="true" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('job', 'editCompany')) and !excludeCompany == true}" disabled="#{disabledCompany == true}"> 
+            <f:selectItem itemLabel="Select One" itemValue=""/>  
+            <f:selectItems value="#{companyList.fetchAll()}" var="itemIter" itemLabel="#{itemIter.displayName}" itemValue="#{itemIter}"/> 
+          </p:selectOneMenu>  
+          <p:message for="companyId"/> 
+        </h:panelGroup> 
+      </h:panelGrid>  
+      <br/>  
+      <p:panel rendered="#{ ! excludeApplications == true}"> 
+        <f:facet name="header"> 
+          <h:outputText value="#{msg.job_applications}"/> 
+        </f:facet>  
+        <p:commandButton action="#{jobAction.addApplications}" update="applications, :#{p:component('editJobComponentPanel')}" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('job', 'editApplications')}" id="btnadd_applications" icon="ui-icon-plus"> 
+          <s:conversationId/> 
+        </p:commandButton>  
+        <p:dataTable id="applications" var="application" tableStyle="width:auto" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('job', 'editApplications')}" value="#{jobAction.listApplications}" rowIndexVar="rowIndex"> 
+          <p:column>
+            <f:facet name="header"> 
+              <h:outputText value="#{msg.application_applicant}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('application', 'viewApplicant')}"/> 
+            </f:facet>  
+            <h:panelGroup> 
+              <p:selectOneMenu converter="#{applicantList.converter}" id="applicantId" label="#{msg.application_applicant}" value="#{application.applicant}" escape="false" required="true" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('application', 'editApplicant')) and !excludeApplicant == true}" disabled="#{disabledApplicant == true}"> 
+                <f:selectItem itemLabel="Select One" itemValue=""/>  
+                <f:selectItems value="#{applicantList.fetchAll()}" var="itemIter" itemLabel="#{itemIter.displayName}" itemValue="#{itemIter}"/> 
+              </p:selectOneMenu>  
+              <p:message for="applicantId"/> 
+            </h:panelGroup> 
+          </p:column>  
+          <p:column>
+            <f:facet name="header"> 
+              <h:outputText value="#{msg.application_coverLetter}  " rendered="#{skipPermissionCheck == 'true' || s:hasPermission('application', 'viewCoverLetter')}"/> 
+            </f:facet>  
+            <h:panelGroup> 
+              <p:inputTextarea id="coverLetter" label="#{msg.application_coverLetter}" value="#{application.coverLetter}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('application', 'editCoverLetter')) and !excludeCoverLetter == true}" disabled="#{disabledCoverLetter == true}" cols="55" rows="5" maxlength="800"/>  
+              <p:message for="coverLetter"/> 
+            </h:panelGroup> 
+          </p:column>  
+          <p:column> 
+            <p:commandButton action="#{jobAction.addApplications}" update="applications, :#{p:component('editJobComponentPanel')}" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('application', 'editApplications')}" id="btnadd_applications" icon="ui-icon-plus"> 
+              <s:conversationId/> 
+            </p:commandButton> 
+          </p:column>  
+          <p:column> 
+            <p:commandButton immediate="true" action="#{jobAction.deleteApplications(rowIndex)}" update="applications" process="@this" id="btndelete_applications" icon="ui-icon-close"> 
+              <s:conversationId/> 
+            </p:commandButton> 
+          </p:column> 
+        </p:dataTable> 
+      </p:panel>  
+      <br/> 
+    </h:panelGrid> 
+  </h:panelGroup> 
+</ui:composition>

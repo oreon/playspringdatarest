@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:s="http://jboss.org/schema/seam/taglib" xmlns:wc="http://witchcraft.sourceforge.net/jsf">  
+  <h:panelGroup id="editInvestorProfileComponentPanel"> 
+    <h:panelGrid columns="1" styleClass="editInfo" columnClasses="leftCol, rightCol"> 
+      <c:if test="${numColumns == null }"> 
+        <c:set var="numColumns" value="4"/> 
+      </c:if>  
+      <h:panelGrid columns="${numColumns}" styleClass="viewInfo" columnClasses="leftCol, rightCol"> 
+        <f:facet name="header"> 
+          <h:outputText value="#{msg.InvestorProfile}"/> 
+        </f:facet>  
+        <p:outputLabel value="#{msg.investorProfile_nameEng}" for="nameEng" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('investorProfile', 'viewNameEng')}"/>  
+        <h:panelGroup> 
+          <p:inputText id="nameEng" label="#{msg.investorProfile_nameEng}" value="#{investorProfile.nameEng}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('investorProfile', 'editNameEng')) and !excludeNameEng == true}" disabled="#{disabledNameEng == true}"></p:inputText>  
+          <p:message for="nameEng"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.investorProfile_nameFre}" for="nameFre" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('investorProfile', 'viewNameFre')}"/>  
+        <h:panelGroup> 
+          <p:inputText id="nameFre" label="#{msg.investorProfile_nameFre}" value="#{investorProfile.nameFre}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('investorProfile', 'editNameFre')) and !excludeNameFre == true}" disabled="#{disabledNameFre == true}"></p:inputText>  
+          <p:message for="nameFre"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.investorProfile_descEng}" for="descEng" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('investorProfile', 'viewDescEng')}"/>  
+        <h:panelGroup> 
+          <p:inputTextarea id="descEng" label="#{msg.investorProfile_descEng}" value="#{investorProfile.descEng}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('investorProfile', 'editDescEng')) and !excludeDescEng == true}" disabled="#{disabledDescEng == true}" cols="55" rows="5" maxlength="800"/>  
+          <p:message for="descEng"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.investorProfile_descFre}" for="descFre" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('investorProfile', 'viewDescFre')}"/>  
+        <h:panelGroup> 
+          <p:inputTextarea id="descFre" label="#{msg.investorProfile_descFre}" value="#{investorProfile.descFre}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('investorProfile', 'editDescFre')) and !excludeDescFre == true}" disabled="#{disabledDescFre == true}" cols="55" rows="5" maxlength="800"/>  
+          <p:message for="descFre"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.investorProfile_imageFileUri}" for="imageFileUri" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('investorProfile', 'viewImageFileUri')}"/>  
+        <h:panelGroup> 
+          <p:inputText id="imageFileUri" label="#{msg.investorProfile_imageFileUri}" value="#{investorProfile.imageFileUri}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('investorProfile', 'editImageFileUri')) and !excludeImageFileUri == true}" disabled="#{disabledImageFileUri == true}"></p:inputText>  
+          <p:message for="imageFileUri"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.investorProfile_conservativeOrder}" for="conservativeOrder" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('investorProfile', 'viewConservativeOrder')}"/>  
+        <h:panelGroup> 
+          <p:spinner size="2" min="0" id="conservativeOrder" label="#{msg.investorProfile_conservativeOrder}" value="#{investorProfile.conservativeOrder}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('investorProfile', 'editConservativeOrder')) and !excludeConservativeOrder == true}" disabled="#{disabledConservativeOrder == true}"/>  
+          <p:message for="conservativeOrder"/> 
+        </h:panelGroup> 
+      </h:panelGrid>  
+      <br/>  
+      <br/> 
+    </h:panelGrid> 
+  </h:panelGroup> 
+</ui:composition>

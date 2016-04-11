@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:s="http://jboss.org/schema/seam/taglib" xmlns:wc="http://witchcraft.sourceforge.net/jsf">  
+  <h:panelGroup id="editCustomerComponentPanel"> 
+    <h:panelGrid columns="1" styleClass="editInfo" columnClasses="leftCol, rightCol"> 
+      <c:if test="${numColumns == null }"> 
+        <c:set var="numColumns" value="4"/> 
+      </c:if>  
+      <h:panelGrid columns="${numColumns}" styleClass="viewInfo" columnClasses="leftCol, rightCol"> 
+        <f:facet name="header"> 
+          <h:outputText value="#{msg.Customer}"/> 
+        </f:facet>  
+        <p:outputLabel value="#{msg.person_gender}" for="gender" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('customer', 'viewGender')}"/>  
+        <h:panelGroup> 
+          <h:selectOneMenu id="gender" label="#{msg.person_gender}" value="#{customer.gender}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('customer', 'editGender')) and !excludeGender == true}" disabled="#{disabledGender == true}"> 
+            <f:selectItem itemLabel="Please Select..." itemValue=""/>  
+            <f:selectItem itemValue="MALE" itemLabel="#{msg.MALE}"/>  
+            <f:selectItem itemValue="FEMALE" itemLabel="#{msg.FEMALE}"/> 
+          </h:selectOneMenu>  
+          <p:message for="gender"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.person_dob}" for="dob" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('customer', 'viewDob')}"/>  
+        <h:panelGroup> 
+          <p:calendar id="dob" label="#{msg.person_dob}" value="#{customer.dob}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('customer', 'editDob')) and !excludeDob == true}" disabled="#{disabledDob == true}" navigator="true"/>  
+          <p:message for="dob"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.customer_firstName}" for="firstName" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('customer', 'viewFirstName')}"/>  
+        <h:panelGroup> 
+          <p:inputText id="firstName" label="#{msg.customer_firstName}" value="#{customer.firstName}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('customer', 'editFirstName')) and !excludeFirstName == true}" disabled="#{disabledFirstName == true}"></p:inputText>  
+          <p:message for="firstName"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.customer_lastName}" for="lastName" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('customer', 'viewLastName')}"/>  
+        <h:panelGroup> 
+          <p:inputText id="lastName" label="#{msg.customer_lastName}" value="#{customer.lastName}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('customer', 'editLastName')) and !excludeLastName == true}" disabled="#{disabledLastName == true}"></p:inputText>  
+          <p:message for="lastName"/> 
+        </h:panelGroup> 
+      </h:panelGrid>  
+      <c:if test="${numColumns == null }"> 
+        <c:set var="numColumns" value="4"/> 
+      </c:if>  
+      <h:panelGrid columns="${numColumns}" styleClass="viewInfo" columnClasses="leftCol, rightCol"> 
+        <f:facet name="header"> 
+          <h:outputText value="#{msg.Address}"/> 
+        </f:facet>  
+        <p:outputLabel value="#{msg.address_street}" for="address_street" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('customer', 'viewStreet')}"/>  
+        <h:panelGroup> 
+          <p:inputText id="address_street" label="#{msg.address_street}" value="#{customer.address.street}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('customer', 'editStreet')) and !excludeStreet == true}" disabled="#{disabledStreet == true}"></p:inputText>  
+          <p:message for="address_street"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.address_city}" for="address_city" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('customer', 'viewCity')}"/>  
+        <h:panelGroup> 
+          <p:inputText id="address_city" label="#{msg.address_city}" value="#{customer.address.city}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('customer', 'editCity')) and !excludeCity == true}" disabled="#{disabledCity == true}"></p:inputText>  
+          <p:message for="address_city"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.address_province}" for="address_province" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('customer', 'viewProvince')}"/>  
+        <h:panelGroup> 
+          <p:inputText id="address_province" label="#{msg.address_province}" value="#{customer.address.province}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('customer', 'editProvince')) and !excludeProvince == true}" disabled="#{disabledProvince == true}"></p:inputText>  
+          <p:message for="address_province"/> 
+        </h:panelGroup> 
+      </h:panelGrid>  
+      <br/>  
+      <br/> 
+    </h:panelGrid> 
+  </h:panelGroup> 
+</ui:composition>

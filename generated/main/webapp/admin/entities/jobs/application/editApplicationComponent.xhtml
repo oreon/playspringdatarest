@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:s="http://jboss.org/schema/seam/taglib" xmlns:wc="http://witchcraft.sourceforge.net/jsf">  
+  <h:panelGroup id="editApplicationComponentPanel"> 
+    <h:panelGrid columns="1" styleClass="editInfo" columnClasses="leftCol, rightCol"> 
+      <c:if test="${numColumns == null }"> 
+        <c:set var="numColumns" value="4"/> 
+      </c:if>  
+      <h:panelGrid columns="${numColumns}" styleClass="viewInfo" columnClasses="leftCol, rightCol"> 
+        <f:facet name="header"> 
+          <h:outputText value="#{msg.Application}"/> 
+        </f:facet>  
+        <p:outputLabel value="#{msg.application_job}" for="jobId" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('application', 'viewJob')}"/>  
+        <h:panelGroup> 
+          <p:selectOneMenu converter="#{jobList.converter}" id="jobId" label="#{msg.application_job}" value="#{application.job}" escape="false" required="true" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('application', 'editJob')) and !excludeJob == true}" disabled="#{disabledJob == true}"> 
+            <f:selectItem itemLabel="Select One" itemValue=""/>  
+            <f:selectItems value="#{jobList.fetchAll()}" var="itemIter" itemLabel="#{itemIter.displayName}" itemValue="#{itemIter}"/> 
+          </p:selectOneMenu>  
+          <p:message for="jobId"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.application_applicant}" for="applicantId" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('application', 'viewApplicant')}"/>  
+        <h:panelGroup> 
+          <p:selectOneMenu converter="#{applicantList.converter}" id="applicantId" label="#{msg.application_applicant}" value="#{application.applicant}" escape="false" required="true" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('application', 'editApplicant')) and !excludeApplicant == true}" disabled="#{disabledApplicant == true}"> 
+            <f:selectItem itemLabel="Select One" itemValue=""/>  
+            <f:selectItems value="#{applicantList.fetchAll()}" var="itemIter" itemLabel="#{itemIter.displayName}" itemValue="#{itemIter}"/> 
+          </p:selectOneMenu>  
+          <p:message for="applicantId"/> 
+        </h:panelGroup>  
+        <p:outputLabel value="#{msg.application_coverLetter}" for="coverLetter" rendered="#{skipPermissionCheck == 'true' || s:hasPermission('application', 'viewCoverLetter')}"/>  
+        <h:panelGroup> 
+          <p:inputTextarea id="coverLetter" label="#{msg.application_coverLetter}" value="#{application.coverLetter}" escape="false" required="false" rendered="#{(skipPermissionCheck == 'true' || s:hasPermission('application', 'editCoverLetter')) and !excludeCoverLetter == true}" disabled="#{disabledCoverLetter == true}" cols="55" rows="5" maxlength="800"/>  
+          <p:message for="coverLetter"/> 
+        </h:panelGroup> 
+      </h:panelGrid>  
+      <br/>  
+      <br/> 
+    </h:panelGrid> 
+  </h:panelGroup> 
+</ui:composition>

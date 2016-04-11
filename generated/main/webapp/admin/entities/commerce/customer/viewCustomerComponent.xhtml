@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:s="http://jboss.org/schema/seam/taglib" xmlns:wc="http://witchcraft.sourceforge.net/jsf">  
+  <h:form> 
+    <p:tabView dynamic="true" cache="true"> 
+      <p:tab title="Customer"> 
+        <div id="printable"> 
+          <ui:include src="/admin/entities/commerce/customer/viewBasicCustomerComponent.xhtml"> 
+            <ui:param name="customer" value="#{customerAction.instance}"/> 
+          </ui:include> 
+        </div>  
+        <div class="buttonBox"> 
+          <h:commandButton value="Edit" rendered="#{s:hasPermission(customerAction.instance, 'edit')}" action="edit"></h:commandButton>  
+          <h:outputText value=" "/>  
+          <h:commandButton value="Back To Listing" action="#{customerAction.cancel}"> 
+            <s:conversationId/> 
+          </h:commandButton> 
+        </div> 
+      </p:tab> 
+    </p:tabView>  
+    <div class="buttonBox"></div> 
+  </h:form>  
+  <br/>  
+  <p:tabView dynamic="true" cache="true" activeIndex="#{customerAction.currentViewPageTabIndex}"> 
+    <p:ajax event="tabChange" listener="#{customerAction.onViewPageTabChange}"/>  
+    <p:tab title="AnsweredQuestionnaires" icon="/images/icons/bricks.png"> 
+      <c:set var="modalId" value="CustomerModalPanel-answeredQuestionnaires"/>  
+      <ui:include src="/admin/entities/questionnaire/answeredQuestionnaire/listAnsweredQuestionnaireComponent.xhtml"> 
+        <ui:param name="records" value="#{answeredQuestionnaireList.getAnsweredQuestionnairesByCustomer(customerAction.instance)}"/>  
+        <ui:param name="modalId" value="${modalId}"/>  
+        <ui:param name="excludeCustomer" value="true"/> 
+      </ui:include>  
+      <h:form> 
+        <p:commandButton value="Create New" action="/admin/entities/questionnaire/answeredQuestionnaire/editAnsweredQuestionnaire.xhtml"> 
+          <f:setPropertyActionListener target="#{answeredQuestionnaireAction.entityId}" value="0"/>  
+          <f:setPropertyActionListener target="#{answeredQuestionnaireAction.instance.customer}" value="#{customerAction.instance}"/>  
+          <f:setPropertyActionListener target="#{answeredQuestionnaireAction.fromView}" value="#{view.viewId}"/>  
+          <s:conversationId/> 
+        </p:commandButton>  
+        <p:commandButton value="Quick Create" update=":#{p:component('editAnsweredQuestionnairePanel')}" oncomplete="PF('editAnsweredQuestionnaireDialog').show()" actionListener="#{answeredQuestionnaireAction.setAnsweredQuestionnaireId(0)}"> 
+          <f:setPropertyActionListener target="#{answeredQuestionnaireAction.instance.customer}" value="#{customerAction.instance}"/> 
+        </p:commandButton> 
+      </h:form> 
+    </p:tab> 
+  </p:tabView>  
+  <br/>  
+  <p:tabView dynamic="true" cache="true"> 
+    <p:tab title="Notes"> 
+      <wc:comments backingAction="#{customerAction}"/> 
+    </p:tab> 
+  </p:tabView> 
+</ui:composition>

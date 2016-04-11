@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:s="http://jboss.org/schema/seam/taglib" xmlns:wc="http://witchcraft.sourceforge.net/jsf">  
+  <c:if test="${empty modalId}"> 
+    <c:set var="modalId" value="MappingEntryModalPanel"/> 
+  </c:if>  
+  <c:if test="${empty listTitle}"> 
+    <c:set var="listTitle" value="MappingEntry Search Results (#{empty records ? 0 : (mappingEntryList.paginated ? mappingEntryList.resultCount : records.size)})"/> 
+  </c:if>  
+  <h3>${listTitle}</h3>  
+  <h:form> 
+    <ui:include src="/admin/entities/questionnaire/mappingEntry/modalDlgMappingEntryComponent.xhtml"> 
+      <ui:param name="modalId" value="${modalId}"/>  
+      <ui:param name="mappingEntry" value="#{mappingEntryAction.instance}"/> 
+    </ui:include> 
+  </h:form>  
+  <h:form id="mappingEntryForm"> 
+    <p:dataTable var="_mappingEntry" value="#{records}" id="mappingEntryList" paginator="true" lazy="true" rows="20" selectionMode="single" selection="#{mappingEntryAction.mappingEntry}" tableStyle="width:auto"> 
+      <p:ajax event="rowSelect" update=":#{p:component('editMappingEntryPanel')}" oncomplete="PF('editMappingEntryDialog').show()" listener="#{mappingEntryAction.onRowSelect}"/>  
+      <p:column headerText="#{msg.dateCreated}" sortBy="#{mappingEntry.dateCreated}" rendered="#{s:hasPermission('dateCreated', 'viewDateCreated' )}"> 
+        <h:outputText value="#{_mappingEntry.dateCreated}"> 
+          <s:convertDateTime type="date" dateStyle="medium"/> 
+        </h:outputText> 
+      </p:column>  
+      <p:column headerText="#{msg.MappingEntry} #{msg.id}" sortBy="#{mappingEntry.id}" rendered="#{s:hasPermission('id', 'viewId' )}"> 
+        <h:link outcome="/admin/entities/questionnaire/mappingEntry/viewMappingEntry.xhtml" rendered="#{s:hasPermission(_mappingEntry, 'view')}" propagation="none"> 
+          <h:outputText value="#{_mappingEntry.id}"/>  
+          <f:param name="mappingEntryId" value="#{_mappingEntry.id}"/> 
+        </h:link> 
+      </p:column>  
+      <p:column headerText="#{msg.mappingEntry_min}" sortBy="#{mappingEntry.min}" rendered="#{ ! excludeMin == true and ( skipPermissionCheck == 'true' || s:hasPermission('mappingEntry', 'viewMin')) }"> 
+        <h:outputText value="#{_mappingEntry.min}" escape="false"/> 
+      </p:column>  
+      <p:column headerText="#{msg.mappingEntry_max}" sortBy="#{mappingEntry.max}" rendered="#{ ! excludeMax == true and ( skipPermissionCheck == 'true' || s:hasPermission('mappingEntry', 'viewMax')) }"> 
+        <h:outputText value="#{_mappingEntry.max}" escape="false"/> 
+      </p:column>  
+      <p:column headerText="#{msg.mappingEntry_outcome}" sortBy="#{mappingEntry.outcome}" rendered="#{ ! excludeOutcome == true and ( skipPermissionCheck == 'true' || s:hasPermission('mappingEntry', 'viewOutcome')) }"> 
+        <h:outputText value="#{_mappingEntry.outcome}" escape="false"/> 
+      </p:column>  
+      <p:column rendered="#{s:hasPermission('_mappingEntry', 'edit') and !_mappingEntryCategory.archived}"> 
+        <h:link outcome="/admin/entities/questionnaire/mappingEntry/editMappingEntry.xhtml" rendered="#{s:hasPermission(_mappingEntry, 'edit')}"> 
+          <h:graphicImage value="/images/icons/edit.png" style="border: 0px" alt="edit"/>  
+          <f:param name="mappingEntryId" value="#{_mappingEntry.id}"/>  
+          <s:conversationId/> 
+        </h:link> 
+      </p:column>  
+      <p:column rendered="#{s:hasPermission('_mappingEntry', 'view') and !_mappingEntryCategory.archived}"> 
+        <h:link outcome="/admin/entities/questionnaire/mappingEntry/viewMappingEntry.xhtml" rendered="#{s:hasPermission(_mappingEntry, 'view')}"> 
+          <h:graphicImage value="/images/icons/eye.png" style="border: 0px" alt="view"/>  
+          <f:param name="mappingEntryId" value="#{_mappingEntry.id}"/>  
+          <s:conversationId/> 
+        </h:link> 
+      </p:column>  
+      <p:column rendered="#{s:hasPermission('mappingEntryAction', 'archive')}" propagation="none"> 
+        <h:commandLink action="#{mappingEntryAction.delete(_mappingEntry)}" onclick="javascript:if(!confirm('Do you really want to permanently delete #{_mappingEntry.displayName} ?')){ return false; } else { return true; }">Delete 
+          <f:param name="currentEntityId" value="#{_mappingEntry.id}"/> 
+        </h:commandLink> 
+      </p:column> 
+    </p:dataTable> 
+  </h:form> 
+</ui:composition>
